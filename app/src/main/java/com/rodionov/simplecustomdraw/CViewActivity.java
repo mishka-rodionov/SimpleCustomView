@@ -25,9 +25,11 @@ public class CViewActivity extends AppCompatActivity {
                 switch (v.getId()){
                     case R.id.increment:
                         simpleView.increment();
+                        simpleView.invalidate();
                         break;
                     case R.id.decrement:
                         simpleView.decrement();
+                        simpleView.invalidate();
                         break;
                 }
             }
