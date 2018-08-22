@@ -38,13 +38,14 @@ public class CompoundView extends RelativeLayout implements Compound {
         simpleView = (SimpleView) this.findViewById(R.id.simpleView_CV);
         currentValue = (TextView) this.findViewById(R.id.currentValue);
         totalValue = (TextView) this.findViewById(R.id.totalValue);
+        currentValue.setText("52");
+        totalValue.setText("90");
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-//        currentValue.setText("52");
-        totalValue.setText("90");
+
         simpleView.setStep(360 / Integer.parseInt(totalValue.getText().toString()));
         simpleView.setSweepAngle(Integer.parseInt(currentValue.getText().toString()));
     }
