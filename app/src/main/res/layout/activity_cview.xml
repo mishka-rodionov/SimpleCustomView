@@ -10,19 +10,31 @@
     <Button
         android:id="@+id/increment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
         android:text="+" />
 
-    <com.rodionov.simplecustomdraw.view.SimpleView
-        android:id="@+id/simpleView"
+    <com.rodionov.simplecustomdraw.view.CompoundView
+        android:id="@+id/compound_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+    </com.rodionov.simplecustomdraw.view.CompoundView>
+
+    <!--<com.rodionov.simplecustomdraw.view.SimpleView-->
+        <!--android:id="@+id/simpleView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_weight="1" />-->
 
     <Button
         android:id="@+id/decrement"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
         android:text="-" />
 
 </LinearLayout>

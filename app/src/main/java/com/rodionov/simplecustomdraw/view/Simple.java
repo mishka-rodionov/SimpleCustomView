@@ -6,8 +6,8 @@ package com.rodionov.simplecustomdraw.view;
 
 public interface Simple {
 
-    void increment();
+    void setSweepAngle(float value);
 
-    void decrement();
+    void setStep(float step);
 
 }

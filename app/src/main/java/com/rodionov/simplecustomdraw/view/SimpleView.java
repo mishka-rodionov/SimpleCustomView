@@ -17,12 +17,18 @@ import android.view.View;
 public class SimpleView extends View implements Simple{
 
     private RectF backgroundRect;
-    private ArcShape arcShape;
-    private Paint backgrounPaint;
-    private Paint backgrounCircle;
+    private Paint backArcPaint;
+    private Paint frontArcPaint;
     private Paint arcBackgrounPaint;
-    private Paint paint;
     private float sweepAngle;
+    private float step;
+
+    private int measuredWidth;
+    private int measuredHeight;
+    private int minMeasuredSize;
+    private float strokeWidth;
+
+    private int SIZE_FACTOR = 15;
 
     public SimpleView(Context context) {
         super(context);
@@ -33,16 +39,58 @@ public class SimpleView extends View implements Simple{
 
 
         sweepAngle = 270;
+        strokeWidth = 30;
+        step = 1;
 
         backgroundRect = new RectF();
-        backgrounPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        backgrounCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
         arcBackgrounPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        backArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        frontArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        paint = new Paint();
-        paint.setColor(Color.BLUE);
-        paint.setStrokeWidth(1);
-        paint.setStyle(Paint.Style.STROKE);
+    }
+
+    /**
+     * Reconcile a desired size for the view contents with a {@link android.view.View.MeasureSpec}
+     * constraint passed by the parent.
+     *
+     * Simplified version of {@link View#resolveSizeAndState(int, int, int)}.
+     *
+     * @param contentSize Size of the view's contents.
+     * @param measureSpec A {@link android.view.View.MeasureSpec} passed by the parent.
+     * @return A size that best fits {@code contentSize} while respecting the parent's constraints.
+     */
+    private int reconcileSize(int contentSize, int measureSpec) {
+        final int mode = MeasureSpec.getMode(measureSpec);
+        final int specSize = MeasureSpec.getSize(measureSpec);
+        switch (mode) {
+            case MeasureSpec.EXACTLY:
+                return specSize;
+            case MeasureSpec.AT_MOST:
+                if (contentSize < specSize) {
+                    return contentSize;
+                } else {
+                    return specSize;
+                }
+            case MeasureSpec.UNSPECIFIED:
+            default:
+                return contentSize;
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        measuredWidth = reconcileSize(200, widthMeasureSpec);
+        measuredHeight = reconcileSize(200, heightMeasureSpec);
+
+        if (measuredWidth > measuredHeight){
+            minMeasuredSize = measuredHeight;
+        }else{
+            minMeasuredSize = measuredWidth;
+        }
+
+        setMeasuredDimension(measuredWidth, measuredHeight);
     }
 
     @Override
@@ -51,56 +99,55 @@ public class SimpleView extends View implements Simple{
         final int canvasWidth = canvas.getWidth();
         final int canvasHeight = canvas.getHeight();
 
+        float rectSide;
+
         final float canvasCenterWidth = canvasWidth * 0.5f;
         final float canvasCenterHeight = canvasHeight * 0.5f;
 
-//        backgroundRect.set(canvasWidth * .25f, canvasHeight * .75f, canvasWidth * .75f, canvasWidth * .25f);
-        backgroundRect.set(canvasCenterWidth - canvasCenterHeight / 2 + 15,
-                canvasCenterHeight - canvasCenterHeight / 2 + 15,
-                canvasCenterWidth + canvasCenterHeight / 2 - 15,
-                canvasCenterHeight + canvasCenterHeight / 2 - 15);
-//        backgroundRect.set();
-        backgrounCircle.setColor(Color.LTGRAY);
-//        sweepAngle = 360;
-//        canvas.drawRect(backgroundRect, backgrounPaint);
-        canvas.drawCircle(canvasCenterWidth, canvasCenterHeight,
-                canvasCenterHeight / 2, backgrounCircle);
-        backgrounCircle.setColor(Color.WHITE);
-        canvas.drawCircle(canvasCenterWidth, canvasCenterHeight,
-                canvasCenterHeight / 2 - 30, backgrounCircle);
-        arcBackgrounPaint.setStyle(Paint.Style.STROKE);
-        arcBackgrounPaint.setStrokeWidth(30);
-        arcBackgrounPaint.setStrokeCap(Paint.Cap.ROUND);
-        arcBackgrounPaint.setColor(Color.RED);
-        canvas.drawArc(backgroundRect, -90, sweepAngle, false, arcBackgrounPaint);
-//        final RectF oval = new RectF();
-//        paint.setStyle(Paint.Style.STROKE);
-//  /*
-//   * drawArc(RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)
-//   *
-//   * oval - The bounds of oval used to define the shape and size of the arc
-//   * startAngle - Starting angle (in degrees) where the arc begins
-//   * sweepAngle - Sweep angle (in degrees) measured clockwise
-//   * useCenter - If true, include the center of the oval in the arc, and close it if it is being stroked. This will draw a wedge
-//   * paint - The paint used to draw the arc
-//   */
-//        oval.set(50, 50, 150, 150);
-//        canvas.drawArc(oval, 0, 45, true, paint);
-//
-//        oval.set(200, 150, 450, 350);
-//        canvas.drawArc(oval, 0, 270, true, paint);
-//
-//        oval.set(200, 400, 450, 600);
-//        canvas.drawArc(oval, 0, 270, false, paint);
+        if (canvasCenterWidth > canvasCenterHeight){
+            if (minMeasuredSize > canvasCenterHeight){
+                rectSide = canvasCenterHeight / 2;
+                strokeWidth = canvasCenterHeight / SIZE_FACTOR;
+            }else{
+                rectSide = minMeasuredSize / 2;
+                strokeWidth = minMeasuredSize / SIZE_FACTOR;
+            }
+        }else {
+            if (minMeasuredSize > canvasCenterWidth){
+                rectSide = canvasCenterWidth / 2;
+                strokeWidth = canvasCenterWidth / SIZE_FACTOR;
+            }else{
+                rectSide = minMeasuredSize / 2;
+                strokeWidth = minMeasuredSize / SIZE_FACTOR;
+            }
+        }
+
+        backgroundRect.set(canvasCenterWidth - rectSide/*canvasCenterHeight / 2 + 15*/,
+                canvasCenterHeight - rectSide/*canvasCenterHeight / 2 + 15*/,
+                canvasCenterWidth + rectSide/*canvasCenterHeight / 2 - 15*/,
+                canvasCenterHeight + rectSide/*canvasCenterHeight / 2 - 15*/);
+//        backgroundRect.set(0f, 0f, canvasWidth, canvasHeight);
+
+        backArcPaint.setStyle(Paint.Style.STROKE);
+        backArcPaint.setStrokeWidth(strokeWidth);
+        backArcPaint.setColor(Color.LTGRAY);
+
+        frontArcPaint.setStyle(Paint.Style.STROKE);
+        frontArcPaint.setStrokeWidth(strokeWidth);
+        frontArcPaint.setStrokeCap(Paint.Cap.ROUND);
+        frontArcPaint.setColor(Color.RED);
+        canvas.drawArc(backgroundRect, 0, 360, false, backArcPaint);
+        canvas.drawArc(backgroundRect, -90, sweepAngle, false, frontArcPaint);
     }
 
     @Override
-    public void increment() {
-        this.sweepAngle += 10;
+    public void setSweepAngle(float value) {
+        this.sweepAngle = value * step;
+        invalidate();
     }
 
     @Override
-    public void decrement() {
-        this.sweepAngle -= 10;
+    public void setStep(float step) {
+        this.step = step;
     }
 }
