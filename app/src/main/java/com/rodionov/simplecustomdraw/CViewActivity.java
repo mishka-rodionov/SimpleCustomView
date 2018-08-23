@@ -1,17 +1,12 @@
 package com.rodionov.simplecustomdraw;
 
-import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 
-import com.rodionov.simplecustomdraw.view.CompoundView;
-import com.rodionov.simplecustomdraw.view.SimpleView;
+import com.rodionov.simplecustomdraw.view.CoachDiagramView;
 
 public class CViewActivity extends AppCompatActivity {
 
@@ -20,8 +15,7 @@ public class CViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cview);
 
-        final CompoundView compoundView = (CompoundView) this.findViewById(R.id.compound_view);
-
+        final CoachDiagramView coachDiagrammView = (CoachDiagramView) this.findViewById(R.id.coachDiagramView);
 
 //        simpleView = (SimpleView) findViewById(R.id.simpleView);
 ////        simpleView.setSweepAngle(200);
@@ -48,7 +42,10 @@ public class CViewActivity extends AppCompatActivity {
                 int dur = 2000;
                 switch (v.getId()){
                     case R.id.increment:
-                        compoundView.setCurrentValue(70);
+                        coachDiagrammView.setCurrentValue(70);
+                        coachDiagrammView.setTotalValue(90);
+                        coachDiagrammView.setStrokeWidth(100);
+                        coachDiagrammView.setArcColor(Color.GREEN);
 //                        valueAnimator.setFloatValues(0, sweepAngle + 50);
 //                        valueAnimator.setDuration(dur);
 //                        valueAnimator.start();
@@ -56,7 +53,10 @@ public class CViewActivity extends AppCompatActivity {
 ////                        simpleView.invalidate();
                         break;
                     case R.id.decrement:
-                        compoundView.setCurrentValue(30);
+                        coachDiagrammView.setCurrentValue(30);
+                        coachDiagrammView.setStrokeWidth(10);
+                        coachDiagrammView.setTotalValue(90);
+                        coachDiagrammView.setArcColor(Color.BLUE);
 //                        valueAnimator.setFloatValues(0, sweepAngle - 50);
 //                        valueAnimator.setDuration(dur);
 //                        valueAnimator.start();
@@ -73,5 +73,4 @@ public class CViewActivity extends AppCompatActivity {
 
     private Button increment;
     private Button decrement;
-    private SimpleView simpleView;
 }

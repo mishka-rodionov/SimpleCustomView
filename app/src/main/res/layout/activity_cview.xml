@@ -14,14 +14,21 @@
         android:layout_weight="5"
         android:text="+" />
 
-    <com.rodionov.simplecustomdraw.view.CompoundView
-        android:id="@+id/compound_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    </com.rodionov.simplecustomdraw.view.CompoundView>
+        <com.rodionov.simplecustomdraw.view.CoachDiagramView
+            android:id="@+id/coachDiagramView"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+        </com.rodionov.simplecustomdraw.view.CoachDiagramView>
+    </LinearLayout>
 
     <!--<com.rodionov.simplecustomdraw.view.SimpleView-->
         <!--android:id="@+id/simpleView"-->
