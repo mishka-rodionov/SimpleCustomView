@@ -17,9 +17,8 @@ class DiagramView : View {
     private val backgroundRect: RectF
     private val backArcPaint: Paint
     private val frontArcPaint: Paint
-    private var sweepAngle: Float = 0.toFloat()
-    private var step: Float = 0.toFloat()
-    private var strokeWidth: Float = 0.toFloat()
+    private var sweepAngle: Float = 0f
+    private var strokeWidth: Float = 0f
 
     init {
         backgroundRect = RectF()
@@ -36,7 +35,6 @@ class DiagramView : View {
 
         sweepAngle = 270f
         strokeWidth = 30f
-        step = 1f
 
         frontArcPaint.strokeWidth = strokeWidth
         backArcPaint.strokeWidth = strokeWidth
@@ -60,21 +58,19 @@ class DiagramView : View {
     }
 
     fun setSweepAngle(value: Float) {
-        this.sweepAngle = value * step
+        this.sweepAngle = value
         invalidate()
-    }
-
-    fun setStep(step: Float) {
-        this.step = step
     }
 
     fun setStrokeWidth(strokeWidth: Float){
         this.strokeWidth = strokeWidth
         this.frontArcPaint.strokeWidth = strokeWidth
         this.backArcPaint.strokeWidth = strokeWidth
+        invalidate()
     }
 
     fun setArcColor(arcColor: Int){
         this.frontArcPaint.color = arcColor
+        invalidate()
     }
 }
