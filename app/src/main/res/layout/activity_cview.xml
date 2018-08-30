@@ -11,7 +11,7 @@
         android:id="@+id/increment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="1"
         android:text="+" />
 
     <LinearLayout
@@ -30,6 +30,28 @@
         </com.rodionov.simplecustomdraw.view.CoachDiagramView>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@android:color/holo_blue_light"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <!--<com.rodionov.simplecustomdraw.view.CustomTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp" />-->
+
+        <com.rodionov.simplecustomdraw.view.CustomCompoundView
+            android:id="@+id/customCompoundView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.rodionov.simplecustomdraw.view.CustomCompoundView>
+
+    </LinearLayout>
+
     <!--<com.rodionov.simplecustomdraw.view.SimpleView-->
         <!--android:id="@+id/simpleView"-->
         <!--android:layout_width="match_parent"-->
@@ -41,7 +63,7 @@
         android:id="@+id/decrement"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="1"
         android:text="-" />
 
 </LinearLayout>
